@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Serialize, Deserializer, Deserialize, Serializer};
 use serde_json;
 
 use std::fs::File;
@@ -61,14 +61,11 @@ struct Request {
 
 fn main() -> Result<(), serde_json::Error> {
 
-    let mut file = File::open("/Users/nastyamillow/Desktop/Rust/serde_practice/src/request.json").unwrap();
+    let mut file = File::open("/Users/nastyamillow/Desktop/Rust/serde_practice_/serde_practice/src/request.json").unwrap();
     let mut json_str = String::new();
     file.read_to_string(&mut json_str).unwrap();
 
     let request: Request = serde_json::from_str(&json_str).unwrap();
-    let toml_str = to_toml(&request).unwrap();
-
-    dbg!(toml_str);
 
     Ok(())
 }
@@ -76,4 +73,15 @@ fn main() -> Result<(), serde_json::Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test() {
+        let mut file = File::open("/Users/nastyamillow/Desktop/Rust/serde_practice_/serde_practice/src/request.json").unwrap();
+        let mut json_str = String::new();
+        file.read_to_string(&mut json_str).unwrap();
+    
+        let request: Request = serde_json::from_str(&json_str).unwrap();
+
+        assert_eq!(request.stream.public_tariff.price, 100);
+    }
 }
